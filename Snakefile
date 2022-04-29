@@ -67,7 +67,7 @@ rule convert_to_vcf:
 	log:
 		"results/logs/convert_to_genotypes/{chrom}.log"
 	output:
-		"results/vcf_parts/{chrom}.vcf"
+		temp("results/vcf_parts/{chrom}.vcf")
 	resources:
 		time = "03:00:00"
 	shell:
@@ -100,7 +100,7 @@ rule headerize_vcfs:
 		vcf="results/vcf_parts/{chrom}.vcf",
 		fai="resources/genome.fasta.fai"
 	output:
-		"results/vcfs_headered/{chrom}.vcf.gz"
+		temp("results/vcfs_headered/{chrom}.vcf.gz")
 	log:
 		"results/logs/headerize_vcfs/{chrom}.log"
 	conda:
@@ -154,7 +154,7 @@ rule annotate_each_chromosome:
 		db="resources/SnpEff/data/{gv}".format(gv=GENOME_VERSION),
 		config="resources/SnpEff/snpEff.config",
 	output:
-		"results/anno_vcf_parts/{chrom}.vcf"
+		temp("results/anno_vcf_parts/{chrom}.vcf")
 	params:
 		genome_version=GENOME_VERSION
 	log:
@@ -175,6 +175,7 @@ rule catenate_anno_chroms:
 	conda:
 		"envs/bcftools.yaml"
 	shell:
-		"bcftools concat {input} | bcftools view -Oz > {output} 2> {log}"
+		" (bcftools concat {input} | bcftools view -Oz > {output} && "
+		" bcftools index -t {output} ) 2> {log} "
 
 
