@@ -2,3 +2,4 @@
 /data
 /resources
 /.snakemake
+.Rproj.user

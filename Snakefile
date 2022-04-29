@@ -150,7 +150,7 @@ rule build_snpeff_database:
 
 rule annotate_each_chromosome:
 	input:
-		vcf="results/vcf_parts/{chrom}.vcf",
+		vcf="results/vcfs_headered/{chrom}.vcf.gz",
 		db="resources/SnpEff/data/{gv}".format(gv=GENOME_VERSION),
 		config="resources/SnpEff/snpEff.config",
 	output:
