@@ -76,7 +76,8 @@ snakemake  --profile hpcc-profiles/slurm-summit
 ```
 
 While these things are running or are in the SLURM queue you can see
-them, by opening up another shell (with tmux, for example) and do this::
+them, by opening up another shell (with tmux, for example) and doing
+this::
 
 ``` sh
 squeue -u $(whoami) -o "%.12i %.9P %.50j %.10u %.2t %.15M %.6D %.18R %.5C %.12m"
@@ -84,3 +85,19 @@ squeue -u $(whoami) -o "%.12i %.9P %.50j %.10u %.2t %.15M %.6D %.18R %.5C %.12m"
 
 If you need more space for the job names, change the `50` above to a
 larger number.
+
+In the end, the annotated VCF file is in the directory `results/vcf`,
+and all the other intermediate (VCF) files have been deleted.
+
+Additionally, the snpEff reports (html files and TSV files of genes) are
+all in the directory `snpeff_reports`.
+
+A few things could be done better here. We don’t need to compress after
+reheadering, because it just gets decompressed to concat it. Also, it
+might be better to create the whole VCF before running it through
+snpEff, because then you get just single summary report. But, that would
+take a little longer, since you lose the parallelizability over
+chromosomes.
+
+At any rate. This shows a simple Snakefile that has made this analysis
+easily reproducible.

@@ -84,6 +84,17 @@ If you need more space for the job names, change the `50` above to a larger numb
 In the end, the annotated VCF file is in the directory `results/vcf`, and all the
 other intermediate (VCF) files have been deleted.
 
+Additionally, the snpEff reports (html files and TSV files of genes) are all in the
+directory `snpeff_reports`.
+
+A few things could be done better here.  We don't need to compress after reheadering,
+because it just gets decompressed to concat it.  Also, it might be better to create the
+whole VCF before running it through snpEff, because then you get just single summary report.
+But, that would take a little longer, since you lose the parallelizability over chromosomes.
+
+At any rate. This shows a simple Snakefile that has made this analysis easily
+reproducible.
+
 
 
 
