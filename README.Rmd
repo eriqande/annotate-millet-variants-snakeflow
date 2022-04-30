@@ -63,9 +63,11 @@ total                          36              1              1
 snakemake --use-conda --conda-create-envs-only --cores 1
 ```
 
-4. Then, you could download the genome and the gff and the genotype.readme using just
-the local core on scompile, but we will just have Snakemake launch each job on
-SLURM using `sbatch`, by way of the slurm profile.  Make sure you do this
+4. Now, we will just have Snakemake launch each job on
+SLURM using `sbatch`, by way of the slurm profile (except for the
+rules marked as `localrules` at the top of the snakefile. (Those rules,
+which are simple text manipulations or downloads, will be run locally on
+`scompile`.)  Make sure you do this next step
 in a tmux session on `scompile`, because this has to keep running, even after
 you log off.
 ```sh

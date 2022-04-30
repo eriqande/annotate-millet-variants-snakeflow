@@ -1,4 +1,7 @@
 
+localrules: all, download_genotype_readme, download_gff, add_to_snpeff_config, make_fai
+
+
 CHRS = [1, 2, 3, 4, 5, 6, 7]
 
 GENOME_VERSION="Pearl_Millet_v1.1"
@@ -155,15 +158,18 @@ rule annotate_each_chromosome:
 		db="resources/SnpEff/data/{gv}".format(gv=GENOME_VERSION),
 		config="resources/SnpEff/snpEff.config",
 	output:
-		temp("results/anno_vcf_parts/{chrom}.vcf")
+		vcf=temp("results/anno_vcf_parts/{chrom}.vcf"),
+		html="results/snpeff_reports/snpeff_summary_{chrom}.html"
 	params:
 		genome_version=GENOME_VERSION
 	log:
 		"results/logs/annotate_each_chromosome/{chrom}.log"
+	resources:
+		time = "03:00:00"
 	conda:
 		"envs/snpeff.yaml"
 	shell:
-		"snpEff ann -c {input.config}  {params.genome_version} {input.vcf} > {output} 2> {log} "
+		"snpEff ann -s {output.html} -c {input.config}  {params.genome_version} {input.vcf} > {output.vcf} 2> {log} "
 
 
 rule catenate_anno_chroms:
@@ -175,6 +181,8 @@ rule catenate_anno_chroms:
 		"results/logs/catenate_anno_chroms/log.log"
 	conda:
 		"envs/bcftools.yaml"
+	resources:
+		time = "04:00:00"
 	shell:
 		" (bcftools concat {input} | bcftools view -Oz > {output} && "
 		" bcftools index -t {output} ) 2> {log} "
