@@ -65,7 +65,7 @@ snakemake --use-conda --conda-create-envs-only --cores 1
 
 4. Now, we will just have Snakemake launch each job on
 SLURM using `sbatch`, by way of the slurm profile (except for the
-rules marked as `localrules` at the top of the snakefile. (Those rules,
+rules marked as `localrules` at the top of the snakefile---those rules,
 which are simple text manipulations or downloads, will be run locally on
 `scompile`.)  Make sure you do this next step
 in a tmux session on `scompile`, because this has to keep running, even after
@@ -75,9 +75,16 @@ snakemake  --profile hpcc-profiles/slurm-summit
 ```
 
 While these things are running or are in the SLURM queue you can see them, by opening
-up another shell (with tmux, for example) and do this::
+up another shell (with tmux, for example) and doing this::
 ```sh
 squeue -u $(whoami) -o "%.12i %.9P %.50j %.10u %.2t %.15M %.6D %.18R %.5C %.12m"
 ```
 If you need more space for the job names, change the `50` above to a larger number.
+
+In the end, the annotated VCF file is in the directory `results/vcf`, and all the
+other intermediate (VCF) files have been deleted.
+
+
+
+
 
