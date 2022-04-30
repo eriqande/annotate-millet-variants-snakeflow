@@ -11,18 +11,18 @@ fi
 
 
 # get the directory that the alias lives in
-FIRSTDIR=$(dirname $(dirname $(which snpEff)))
+FIRSTDIR=$(dirname $(dirname $(which snpEff))) &&
 # get the directory of the value of the alias
-TMP=$(dirname $(readlink -s `which snpEff`))
+TMP=$(dirname $(readlink -s `which snpEff`)) &&
 # combine those to get the directory where the config file is
-SNPEFFDIR=${FIRSTDIR}${TMP/../}
+SNPEFFDIR=${FIRSTDIR}${TMP/../} &&
 
 
 
-mkdir -p resources/SnpEff
+mkdir -p resources/SnpEff  &&
 
 # copy the config file
-cp $SNPEFFDIR/snpEff.config  $OUTPUT
+cp $SNPEFFDIR/snpEff.config  $OUTPUT  &&
 
 # add an entry for pearl millet
 echo "

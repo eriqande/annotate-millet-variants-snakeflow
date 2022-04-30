@@ -119,9 +119,9 @@ rule add_to_snpeff_config:
 	output:
 		"resources/SnpEff/snpEff.config"
 	log:
-		"results/add_to_snpeff_config/log.log"
+		"results/logs/add_to_snpeff_config/log.log"
 	conda:
-		"envs/bcftools.yaml"
+		"envs/snpeff.yaml"
 	shell:
 		"./script/add_to_config.sh {params.genome_version} {params.species_name_string} {output} 2> {log}"
 
@@ -141,7 +141,8 @@ rule build_snpeff_database:
 	conda:
 		"envs/snpeff.yaml"
 	shell:
-		"( cp resources/genome.fasta {output}/sequences.fa && "
+		"( mkdir -p {output} && "
+		" cp resources/genome.fasta {output}/sequences.fa && "
 		" cp resources/genome.gff {output}/genes.gff && "
 		" snpEff build -Xmx4g  -noCheckCds -noCheckProtein -gff3 "
 		"    -c resources/SnpEff/snpEff.config  -v {params.genome_version} ) > {log} 2>&1"
