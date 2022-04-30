@@ -182,7 +182,7 @@ rule catenate_anno_chroms:
 	conda:
 		"envs/bcftools.yaml"
 	resources:
-		time = "04:00:00"
+		time = "02:00:00"
 	shell:
 		" (bcftools concat {input} | bcftools view -Oz > {output} && "
 		" bcftools index -t {output} ) 2> {log} "
